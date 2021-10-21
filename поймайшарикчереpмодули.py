@@ -4,7 +4,6 @@ from pygame.draw import *
 import model
 import colors
 
-model.init()
 
 "Функция отрисовки нового квадрата"
 def draw_polygon(color, x2, y2, r2, width):
@@ -61,6 +60,10 @@ while not finished:
 
     screen.fill(colors.BLACK)
 
+
+    # Функция вывода счёта
+    schet()
+
     # Рисуем шары и квадраты
     for i in range(len(model.balls)):
         color, x, y, r = model.balls[i]
@@ -70,10 +73,9 @@ while not finished:
         color, x2, y2, r2, width = model.polygons[i]
         draw_polygon(color, x2, y2, r2, width)
 
-    # Функция вывода счёта
-    schet()
-
     pygame.display.update()
 
+for i in range(100):
+    zavershenie_igry()
 
 pygame.quit()

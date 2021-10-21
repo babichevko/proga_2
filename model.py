@@ -1,6 +1,7 @@
 from random import randint
 from colors import COLORS
 
+
 def init():
     "Массивы для параметров шаров, квадратов и их скоростей"
     global chislo_ochkov, balls, polygons,  v, v2, a2, g, h
@@ -12,7 +13,6 @@ def init():
     g=0
     h=0
     chislo_ochkov = 0
-
 
 "Функция создания параметров нового шара"
 def new_ball():
@@ -92,7 +92,6 @@ def tick():
     #Здесь собраны все события, происходящие независимо от действий игрока с течением времени
 
     # Если ничего не делать, число очков постепенно уменьшается
-    chislo_ochkov -= 1
 
     "Изменение положения шаров и квадратов"
     for i in range(len(balls)):
@@ -201,3 +200,5 @@ def handler(eventbutton, eventpos):
         new_polygon()
         polygon_speed()
         polygon_acceleration()
+
+
