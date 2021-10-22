@@ -1,18 +1,13 @@
 from random import randint
 from colors import COLORS
 
-
-global chislo_ochkov, finished
-chislo_ochkov = 0
-finished = False
-balls = []
-polygons = []
-v = []
-v2 = []
-a2 = []
-g = 0
-h = 0
-
+def init():
+    global balls, polygons, v, v2, a2
+    balls = []
+    polygons = []
+    v = []
+    v2 = []
+    a2 = []
 
 "Функция создания параметров нового шара"
 def new_ball():
@@ -146,10 +141,6 @@ def tick(chislo_ochkov):
                 v2[i][1] = 5
             if v2[i][1] > 20:
                 v2[i][1] = -5
-    # И если шаров и квадратов слишком много - игра заканчивается
-    if len(balls) + len(polygons) > 40:
-        finished = True
-
 
 
 def handler(eventbutton, eventpos, chislo_ochkov):

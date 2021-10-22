@@ -1,6 +1,7 @@
 import pygame
 from pygame.draw import *
 from random import randint
+
 pygame.init()
 
 FPS = 30
@@ -131,7 +132,7 @@ def nachalo_igry():
         polygon_acceleration()
 
 def leaderboard_update(Name, chislo_ochkov):
-    # Jбновляет таблицу лидеров
+    # Обновляет таблицу лидеров
     len = 0
     LEADER = []
     file = open('Leaderboards.txt', 'r')
