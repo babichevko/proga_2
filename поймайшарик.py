@@ -25,7 +25,7 @@ polygons=[]
 v=[]
 v2=[]
 a2=[]
-Name = input('Введите Ваше имя')
+
 
 "Функция создания параметров нового шара"
 def new_ball():
@@ -134,38 +134,29 @@ def nachalo_igry():
 def leaderboard_update(Name, chislo_ochkov):
     # Обновляет таблицу лидеров
     len = 0
+    global LEADER
     LEADER = []
     file = open('Leaderboards.txt', 'r')
     for line in file:
         LEADER.append([line.split(' - ')[0], int(line.split(' - ')[1])])
         len += 1
 
-    for i in range(0, len):
-            if LEADER[i][0] == Name and LEADER[i][1] >= chislo_ochkov:
-                return LEADER
-            if LEADER[i][0] == Name and LEADER[i][1] < chislo_ochkov:
-                LEADER.pop(i)
-                len -= 1
-                for j in range(0, len):
-                    if LEADER[j][1] < chislo_ochkov:
-                        LEADER = LEADER[0:j] + [[Name, chislo_ochkov]] + LEADER[j:]
-
-    for i in range(0, len):
+    for i in range(0, len-1):
         if LEADER[i][1] < chislo_ochkov:
-            LEADER = LEADER[0:i] + [[Name, chislo_ochkov]] + LEADER[i:]
+            if i == 0:
+                LEADER = [[Name, chislo_ochkov]] + LEADER
 
-        if LEADER[i][1] == chislo_ochkov:
-            LEADER = LEADER[0:i+1] + [[Name, chislo_ochkov]] + LEADER[i+1:]
+            else:
+                LEADER = LEADER[0:i] + [[Name, chislo_ochkov]] + LEADER[i:]
+            break
 
-    LEADER.append([Name, chislo_ochkov])
 
-def write_leaderboard(Name):
+def write_leaderboard():
     # Записывает обновленную таблицу лидеров в текстовый файл Leaderboards.txt
 
-    TABLE = leaderboard_update(Name, chislo_ochkov)
     file = open('Leaderboards.txt', 'w')
-    for line in TABLE:
-        file.write(line[0] + " - " + str(line[1]) + '\n')
+    for line in LEADER:
+        file.write(str(line[0]) + " - " + str(line[1]) + '\n')
 
 pygame.display.update()
 
@@ -314,7 +305,6 @@ while not finished:
 for i in range(100):
     zavershenie_igry()
 
-leaderboard_update(Name, chislo_ochkov)
-write_leaderboard(Name)
+
 
 pygame.quit()
