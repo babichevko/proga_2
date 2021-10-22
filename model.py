@@ -2,17 +2,17 @@ from random import randint
 from colors import COLORS
 
 
-def init():
-    "Массивы для параметров шаров, квадратов и их скоростей"
-    global chislo_ochkov, balls, polygons,  v, v2, a2, g, h
-    balls = []
-    polygons = []
-    v = []
-    v2 = []
-    a2 = []
-    g=0
-    h=0
-    chislo_ochkov = 0
+global chislo_ochkov, finished
+chislo_ochkov = 0
+finished = False
+balls = []
+polygons = []
+v = []
+v2 = []
+a2 = []
+g = 0
+h = 0
+
 
 "Функция создания параметров нового шара"
 def new_ball():
@@ -88,10 +88,11 @@ def nachalo_igry():
         polygon_speed()
         polygon_acceleration()
 
-def tick():
+def tick(chislo_ochkov):
     #Здесь собраны все события, происходящие независимо от действий игрока с течением времени
 
     # Если ничего не делать, число очков постепенно уменьшается
+    chislo_ochkov -= 1
 
     "Изменение положения шаров и квадратов"
     for i in range(len(balls)):
@@ -145,10 +146,13 @@ def tick():
                 v2[i][1] = 5
             if v2[i][1] > 20:
                 v2[i][1] = -5
+    # И если шаров и квадратов слишком много - игра заканчивается
+    if len(balls) + len(polygons) > 40:
+        finished = True
 
 
 
-def handler(eventbutton, eventpos):
+def handler(eventbutton, eventpos, chislo_ochkov):
     #Здесь собрано всё связанное с обработкой событий от мыши
     g=0
     h=0

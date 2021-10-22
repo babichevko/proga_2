@@ -4,6 +4,17 @@ from pygame.draw import *
 import model
 import colors
 
+def nachalo_igry():
+    "Создаём изначально несколько шаров  и квадратов"
+    for i in range(5, 10):
+        model.new_ball()
+    for i in range(len(model.balls)):
+        model.ball_speed()
+    for i in range(5, 10):
+        model.new_polygon()
+    for i in range(len(model.polygons)):
+        model.polygon_speed()
+        model.polygon_acceleration()
 
 "Функция отрисовки нового квадрата"
 def draw_polygon(color, x2, y2, r2, width):
@@ -38,25 +49,25 @@ def zavershenie_igry():
 
 pygame.init()
 
+nachalo_igry()
 FPS = 30
 screen = pygame.display.set_mode((1200, 900))
 
 
 clock = pygame.time.Clock()
-finished = False
 pygame.display.update()
 
-while not finished:
+while not model.finished:
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            finished = True
+            model.finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             #Обработка событий от мыши
-            model.handler(event.button, event.pos)
+            model.handler(event.button, event.pos, model.chislo_ochkov)
 
     #вызов обсчёта модели
-    model.tick()
+    model.tick(model.chislo_ochkov)
 
     screen.fill(colors.BLACK)
 
@@ -74,6 +85,8 @@ while not finished:
         draw_polygon(color, x2, y2, r2, width)
 
     pygame.display.update()
+
+screen.fill(colors.BLACK)
 
 for i in range(100):
     zavershenie_igry()
