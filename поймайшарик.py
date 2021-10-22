@@ -26,6 +26,7 @@ v=[]
 v2=[]
 a2=[]
 
+Name = input('Введите Ваше имя')
 
 "Функция создания параметров нового шара"
 def new_ball():
@@ -131,7 +132,7 @@ def nachalo_igry():
         polygon_speed()
         polygon_acceleration()
 
-def leaderboard_update(Name, chislo_ochkov):
+def leader_update(Name, chislo_ochkov):
     # Обновляет таблицу лидеров
     len = 0
     global LEADER
@@ -151,7 +152,7 @@ def leaderboard_update(Name, chislo_ochkov):
             break
 
 
-def write_leaderboard():
+def write_leader():
     # Записывает обновленную таблицу лидеров в текстовый файл Leaderboards.txt
 
     file = open('Leaderboards.txt', 'w')
@@ -305,6 +306,7 @@ while not finished:
 for i in range(100):
     zavershenie_igry()
 
-
+leader_update(Name, chislo_ochkov)
+write_leader()
 
 pygame.quit()

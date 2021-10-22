@@ -48,6 +48,7 @@ def zavershenie_igry(chislo_ochkov):
     screen.blit(textsurface3, (500, 600))
     pygame.display.update()
 
+Name = input('Введите ваше имя')
 
 pygame.init()
 
@@ -103,5 +104,8 @@ screen.fill(colors.BLACK)
 
 for i in range(100):
     zavershenie_igry(ochki)
+
+model.leader_update(Name, ochki)
+model.write_leader()
 
 pygame.quit()

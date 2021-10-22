@@ -72,6 +72,33 @@ def proverka_najatia(coordinaty_najatiya, coordinata_kruga_x, coordinata_kruga_y
     if cvadrat_rasstoiania < radius_kruga ** 2:
         najal = True
 
+def leader_update(Name, chislo_ochkov):
+    # Обновляет таблицу лидеров
+    len = 0
+    global LEADER
+    LEADER = []
+    file = open('Leaderboards.txt', 'r')
+    for line in file:
+        LEADER.append([line.split(' - ')[0], int(line.split(' - ')[1])])
+        len += 1
+
+    for i in range(0, len-1):
+        if LEADER[i][1] < chislo_ochkov:
+            if i == 0:
+                LEADER = [[Name, chislo_ochkov]] + LEADER
+
+            else:
+                LEADER = LEADER[0:i] + [[Name, chislo_ochkov]] + LEADER[i:]
+            break
+
+
+def write_leader():
+    # Записывает обновленную таблицу лидеров в текстовый файл Leaderboards.txt
+
+    file = open('Leaderboards.txt', 'w')
+    for line in LEADER:
+        file.write(str(line[0]) + " - " + str(line[1]) + '\n')
+
 
 def nachalo_igry():
     "Создаём изначально несколько шаров  и квадратов"
