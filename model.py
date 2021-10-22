@@ -1,6 +1,8 @@
 from random import randint
 from colors import COLORS
 
+chislo_ochkov = 0
+
 def init():
     global balls, polygons, v, v2, a2
     balls = []
@@ -83,8 +85,9 @@ def nachalo_igry():
         polygon_speed()
         polygon_acceleration()
 
-def tick(chislo_ochkov):
+def tick():
     #Здесь собраны все события, происходящие независимо от действий игрока с течением времени
+    global chislo_ochkov
 
     # Если ничего не делать, число очков постепенно уменьшается
     chislo_ochkov -= 1
@@ -143,8 +146,9 @@ def tick(chislo_ochkov):
                 v2[i][1] = -5
 
 
-def handler(eventbutton, eventpos, chislo_ochkov):
+def handler(eventbutton, eventpos):
     #Здесь собрано всё связанное с обработкой событий от мыши
+    global chislo_ochkov
     g=0
     h=0
     if eventbutton == 1:
@@ -153,7 +157,6 @@ def handler(eventbutton, eventpos, chislo_ochkov):
             proverka_najatia(eventpos, balls[i][1], balls[i][2], balls[i][3])
 
             "Если попали по шару - удаляем его, делаем новый, счёт увеличивается"
-
             if najal is True:
                 new_ball()
                 # Заменяем старый шар на новый
@@ -186,7 +189,7 @@ def handler(eventbutton, eventpos, chislo_ochkov):
                 a2.pop(len(a2) - 1)
                 chislo_ochkov += 150
                 h = 1
-    # Если не попали - число шаров и квадратов увеличивается
+    # Если не попали ни по какому шару - создаётся шар, а если вооббще ни по чему не попали- то квадрат
     if g != 1:
         new_ball()
         ball_speed()

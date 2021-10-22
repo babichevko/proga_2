@@ -64,19 +64,21 @@ pygame.display.update()
 
 while not finished:
     clock.tick(FPS)
-    global chislo_ochkov
-    chislo_ochkov = 0
+
+    global ochki
+    ochki = model.chislo_ochkov
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             #Обработка событий от мыши
-            model.handler(event.button, event.pos, chislo_ochkov)
+            model.handler(event.button, event.pos)
 
     #вызов обсчёта модели
-    model.tick(chislo_ochkov)
+    model.tick()
 
-    # И если шаров и квадратов слишком много - игра заканчивается
+    # И если шаров и квадратов становится слишком много из-за промахов - игра заканчивается
     if len(model.balls) + len(model.polygons) > 40:
         finished = True
 
@@ -84,7 +86,7 @@ while not finished:
 
 
     # Функция вывода счёта
-    schet(chislo_ochkov)
+    schet(ochki)
 
     # Рисуем шары и квадраты
     for i in range(len(model.balls)):
@@ -100,6 +102,6 @@ while not finished:
 screen.fill(colors.BLACK)
 
 for i in range(100):
-    zavershenie_igry(chislo_ochkov)
+    zavershenie_igry(ochki)
 
 pygame.quit()
