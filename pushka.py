@@ -1,5 +1,5 @@
 import math
-from random import choice
+from random import choice, randint
 
 import pygame
 
@@ -66,7 +66,7 @@ class Ball:
             Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
         """
         # FIXME
-            return False
+        return False
 
 
 class Gun:
@@ -108,6 +108,7 @@ class Gun:
 
     def draw(self):
         # FIXIT don't know how to do it
+        pass
 
     def power_up(self):
         if self.f2_on:
@@ -126,9 +127,9 @@ class Target:
 
     def new_target(self):
         """ Инициализация новой цели. """
-        x = self.x = rnd(600, 780)
-        y = self.y = rnd(300, 550)
-        r = self.r = rnd(2, 50)
+        x = self.x = randint(600, 780)
+        y = self.y = randint(300, 550)
+        r = self.r = randint(2, 50)
         color = self.color = RED
 
     def hit(self, points=1):
