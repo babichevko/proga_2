@@ -47,7 +47,6 @@ class Ball:
         self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
         и стен по краям окна (размер окна 800х600).
         """
-        # FIXME
         self.x += self.vx
         self.y -= self.vy
         self.vy -= g
@@ -71,9 +70,7 @@ class Ball:
         Returns:
             Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
         """
-        # FIXME
-        return False
-
+        return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= (self.r + obj.r) ** 2)
 
 class Gun:
     def __init__(self, screen):
@@ -82,6 +79,8 @@ class Gun:
         self.f2_on = 0
         self.an = 1
         self.color = GREY
+        self.x = 40
+        self.y = 450
 
     def fire2_start(self, event):
         self.f2_on = 1
@@ -113,8 +112,17 @@ class Gun:
             self.color = GREY
 
     def draw(self):
-        # FIXIT don't know how to do it
-        pass
+        width = 10
+        coords = [
+            (self.x, self.y),
+            (self.x + (self.f2_power + 20) * math.cos(self.an),
+             self.y + (self.f2_power + 20) * math.sin(self.an)),
+            (self.x + (self.f2_power + 20) * math.cos(self.an) + width * math.sin(self.an),
+             self.y + (self.f2_power + 20) * math.sin(self.an) - width * math.cos(self.an)),
+            (self.x + width * math.sin(self.an), self.y - width * math.cos(self.an))
+        ]
+
+        polygon(self.screen, self.color, (coords), width=0)
 
     def power_up(self):
         if self.f2_on:
@@ -140,8 +148,7 @@ class Target:
 
     def hit(self, points=1):
         """Попадание шарика в цель."""
-        self.points += points
-
+        pass
     def draw(self):
         ...
 
@@ -177,10 +184,6 @@ while not finished:
 
     for b in balls:
         b.move()
-        if b.hittest(target) and target.live:
-            target.live = 0
-            target.hit()
-            target.new_target()
     gun.power_up()
 
 pygame.quit()
