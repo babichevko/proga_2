@@ -2,9 +2,11 @@ import math
 from random import choice, randint
 
 import pygame
+from pygame.draw import *
 
 
 FPS = 30
+g = 0.5
 
 RED = 0xFF0000
 BLUE = 0x0000FF
@@ -48,6 +50,10 @@ class Ball:
         # FIXME
         self.x += self.vx
         self.y -= self.vy
+        self.vy -= g
+        if (self.y > HEIGHT - self.r):
+            self.y = HEIGHT - self.r
+            self.vy = -0.6 * self.vy
 
     def draw(self):
         pygame.draw.circle(
