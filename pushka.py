@@ -191,6 +191,12 @@ def otrajenie(obj):
         obj.vy = -1 * obj.vy
         obj.y = HEIGHT - obj.r
 
+def manager_of_targets():
+    for target in Targets:
+        target.draw()
+        target.move()
+        otrajenie(target)
+
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 bullet = 0
@@ -199,18 +205,20 @@ points = 0
 
 clock = pygame.time.Clock()
 gun = Gun(screen)
-target = Target()
-finished = False
+Targets = []
 
+for i in range(randint(2,4)):
+    target = Target()
+    Targets.append(target)
+
+finished = False
 do_message = 0
 
 while not finished:
     screen.fill(WHITE)
     gun.draw()
-    target.draw()
     score()
-    target.move()
-    otrajenie(target)
+    manager_of_targets()
     for b in balls:
         b.draw()
     if (do_message > 0):
@@ -231,13 +239,15 @@ while not finished:
 
     for b in balls:
         b.move()
-        if b.hittest(target):
-            target.hit()
-            balls = []
-            bulletshow = bullet
-            target = Target()
-            do_message = 75
-            bullet = 0
+        for i in range(len(Targets)):
+            if b.hittest(Targets[i]):
+                Targets[i].hit()
+                balls = []
+                bulletshow = bullet
+                target = Target()
+                Targets[i] = target
+                do_message = 75
+                bullet = 0
     gun.power_up()
 
 pygame.quit()
