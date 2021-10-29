@@ -158,6 +158,22 @@ class Target:
             self.r
         )
 
+    def score(self):
+        """вывод очков на экран"""
+        ochki = pygame.font.Font(None, 36)
+        text = 'score: '
+        text += str(points)
+        schet = ochki.render(text, True, BLACK)
+        screen.blit(schet, (10, 10))
+
+    def message(self):
+        message = pygame.font.Font(None, 36)
+        text = 'вы уничтожили цель за '
+        text += str(bulletshow)
+        text += ' выстрелов'
+        text1 = message.render(text, True, BLACK)
+        screen.blit(text1, (180, 250))
+
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -170,12 +186,13 @@ gun = Gun(screen)
 target = Target()
 finished = False
 
-do_showtext=0
+do_message = 90
 
 while not finished:
     screen.fill(WHITE)
     gun.draw()
     target.draw()
+    target.score()
     for b in balls:
         b.draw()
     pygame.display.update()
@@ -196,8 +213,9 @@ while not finished:
         if b.hittest(target):
             target.hit()
             balls = []
+            bulletshow = bullet
             target = Target()
-            do_showtext = 100
+            do_message = 90
     gun.power_up()
 
 pygame.quit()
