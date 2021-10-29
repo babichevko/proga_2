@@ -133,11 +133,6 @@ class Gun:
 
 
 class Target:
-    # self.points = 0
-    # self.live = 1
-    # FIXME: don't work!!! How to call this functions when object is created?
-    # self.new_target()
-
 
     def __init__(self):
         """ Инициализация новой цели. """
@@ -146,7 +141,7 @@ class Target:
         self.r = randint(15, 50)
         self.color = GAME_COLORS[randint(0, 5)]
 
-    def hit(self, point = 1):
+    def hit(self, point=1):
         """Попадание шарика в цель."""
         global points
         points += point
@@ -186,7 +181,7 @@ gun = Gun(screen)
 target = Target()
 finished = False
 
-do_message = 90
+do_message = 0
 
 while not finished:
     screen.fill(WHITE)
@@ -195,6 +190,9 @@ while not finished:
     target.score()
     for b in balls:
         b.draw()
+    if (do_message > 0):
+        target.message()
+        do_message -= 1
     pygame.display.update()
 
     clock.tick(FPS)
@@ -215,7 +213,8 @@ while not finished:
             balls = []
             bulletshow = bullet
             target = Target()
-            do_message = 90
+            do_message = 75
+            bullet = 0
     gun.power_up()
 
 pygame.quit()
