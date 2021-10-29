@@ -113,7 +113,7 @@ class Gun:
 
     def draw(self):
         width = 10
-        coords = [
+        coordinaty_granic_pushki = [
             (self.x, self.y),
             (self.x + (self.f2_power + 20) * math.cos(self.an),
              self.y + (self.f2_power + 20) * math.sin(self.an)),
@@ -121,8 +121,7 @@ class Gun:
              self.y + (self.f2_power + 20) * math.sin(self.an) - width * math.cos(self.an)),
             (self.x + width * math.sin(self.an), self.y - width * math.cos(self.an))
         ]
-
-        polygon(self.screen, self.color, (coords), width=0)
+        polygon(self.screen, self.color, (coordinaty_granic_pushki))
 
     def power_up(self):
         if self.f2_on:
@@ -139,18 +138,25 @@ class Target:
     # FIXME: don't work!!! How to call this functions when object is created?
     # self.new_target()
 
-    def new_target(self):
-        """ Инициализация новой цели. """
-        x = self.x = randint(600, 780)
-        y = self.y = randint(300, 550)
-        r = self.r = randint(2, 50)
-        color = self.color = RED
 
-    def hit(self, points=1):
+    def __init__(self):
+        """ Инициализация новой цели. """
+        self.x = randint(600, 780)
+        self.y = randint(300, 550)
+        self.r = randint(15, 50)
+        self.color = GAME_COLORS[randint(0, 5)]
+
+    def hit(self, point = 1):
         """Попадание шарика в цель."""
-        pass
+        global points
+        self.points += point
     def draw(self):
-        ...
+        pygame.draw.circle(
+            screen,
+            self.color,
+            (self.x, self.y),
+            self.r
+        )
 
 
 pygame.init()
