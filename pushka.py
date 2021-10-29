@@ -149,7 +149,7 @@ class Target:
     def hit(self, point = 1):
         """Попадание шарика в цель."""
         global points
-        self.points += point
+        points += point
     def draw(self):
         pygame.draw.circle(
             screen,
@@ -163,11 +163,14 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 bullet = 0
 balls = []
+points = 0
 
 clock = pygame.time.Clock()
 gun = Gun(screen)
 target = Target()
 finished = False
+
+do_showtext=0
 
 while not finished:
     screen.fill(WHITE)
@@ -190,6 +193,11 @@ while not finished:
 
     for b in balls:
         b.move()
+        if b.hittest(target):
+            target.hit()
+            balls = []
+            target = Target()
+            do_showtext = 100
     gun.power_up()
 
 pygame.quit()
