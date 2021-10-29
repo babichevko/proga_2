@@ -140,6 +140,13 @@ class Target:
         self.y = randint(300, 550)
         self.r = randint(15, 50)
         self.color = GAME_COLORS[randint(0, 5)]
+        self.vx = randint(-5, 5)
+        self.vy = randint(-5, 5)
+
+    def move(self):
+        """движение цели"""
+        self.x += self.vx
+        self.y += self.vy
 
     def hit(self, point=1):
         """Попадание шарика в цель."""
@@ -153,22 +160,36 @@ class Target:
             self.r
         )
 
-    def score(self):
-        """вывод очков на экран"""
-        ochki = pygame.font.Font(None, 36)
-        text = 'score: '
-        text += str(points)
-        schet = ochki.render(text, True, BLACK)
-        screen.blit(schet, (10, 10))
+def score():
+    """вывод очков на экран"""
+    ochki = pygame.font.Font(None, 36)
+    text = 'score: '
+    text += str(points)
+    schet = ochki.render(text, True, BLACK)
+    screen.blit(schet, (10, 10))
 
-    def message(self):
-        message = pygame.font.Font(None, 36)
-        text = 'вы уничтожили цель за '
-        text += str(bulletshow)
-        text += ' выстрелов'
-        text1 = message.render(text, True, BLACK)
-        screen.blit(text1, (180, 250))
+def message():
+    message = pygame.font.Font(None, 36)
+    text = 'вы уничтожили цель за '
+    text += str(bulletshow)
+    text += ' выстрелов'
+    text1 = message.render(text, True, BLACK)
+    screen.blit(text1, (180, 250))
 
+def otrajenie(obj):
+    #отражение объекта от стенок
+    if (obj.x + obj.r > WIDTH):
+        obj.vx = -1 * obj.vx
+        obj.x = WIDTH - obj.r
+    elif (obj.x - obj.r < 0):
+        obj.vx = -1 * obj.vx
+        obj.x = obj.r
+    elif (obj.y - obj.r < 0):
+        obj.vy = -1 * obj.vy
+        obj.y = obj.r
+    elif (obj.y + obj.r > HEIGHT):
+        obj.vy = -1 * obj.vy
+        obj.y = HEIGHT - obj.r
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -187,11 +208,13 @@ while not finished:
     screen.fill(WHITE)
     gun.draw()
     target.draw()
-    target.score()
+    score()
+    target.move()
+    otrajenie(target)
     for b in balls:
         b.draw()
     if (do_message > 0):
-        target.message()
+        message()
         do_message -= 1
     pygame.display.update()
 
