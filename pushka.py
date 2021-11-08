@@ -226,40 +226,17 @@ class Target(Ball):
             self.x -= (obj.x-self.x)/100
 
 
-def drawscore():
-    """вывод очков на экран"""
-    f1 = pygame.font.Font(None, 36)
-    tbl = 'points: '
-    tbl += str(points)
-    text1 = f1.render(tbl, True, BLACK)
-    screen.blit(text1, (10, 10))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-def showtext():
-    f1 = pygame.font.Font(None, 36)
-    tbl = 'вы уничтожили цель за '
-    tbl += str(bulletshow)
-    tbl += ' выстрелов'
-    text1 = f1.render(tbl, True, BLACK)
-    screen.blit(text1, (180, 250))
-
-
-def collision(obj):
-    """функция коллизии, получает объект и при столкновении отражает его от стен
-    Xbound, Ybound - границы экрана, заданы вне функции
-    """
-    if(obj.x + obj.r > WIDTH):
-        obj.vx *= -1
-        obj.x = WIDTH-obj.r
-    elif(obj.x - obj.r < 0):
-        obj.vx *= -1
-        obj.x = obj.r
-    elif(obj.y - obj.r < 0):
-        obj.vy *= -1
-        obj.y = obj.r
-    elif(obj.y + obj.r > HEIGHT):
-        obj.vy *= -1
-        obj.y = HEIGHT-obj.r
+def write(string, score, x, y, a):
+    f0 = pygame.font.Font(None, 50)
+    if score > -1:
+        text10 = f0.render(str(score), True, (a, 0, 0))
+        screen.blit(text10, (x + 150, y))
+    string = str(string)
+    text20 = f0.render(string, True, (a, 0, 0))
+    screen.blit(text20, (x, y))
 
 
 pygame.init()
