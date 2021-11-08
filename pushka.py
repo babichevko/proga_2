@@ -181,56 +181,49 @@ class Gun:
             self.color = GREEN
 
 
-class Target:
-    def __init__(self, type=1):
-        """ Инициализация новой цели. """
-        self.x = randint(600, 780)
-        self.y = randint(300, 550)
-        self.r = randint(15, 50)
-        self.vx = randint(-7, 7)
-        self.vy = randint(-7, 7)
-        self.color = GAME_COLORS[randint(0,5)]
-        self.live=type
-        self.type=type
+class Target(Ball):
+    """ Класс, наследуемый от ball
+    """
+    def __init__(self, screen, x, y, r, vx, vy, color, g):
+     super().__init__(screen, x, y, r, vx, vy, color, g)
+     self.screen = screen
 
-    def hit(self, point=1):
-        """Попадание шарика в цель."""
-        self.live -= 1
-        global points
-        points += point
+    def hittest(self, obj):
+        """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
+        Args:
+           obj: Обьект, с которым проверяется столкновение.
+        Returns:
+        Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
+        """
+        if (obj.x - self.x) ** 2 + (obj.y - self.y) ** 2 <= (self.r + obj.r) ** 2:
+            return True
+        else:
+            return False
 
     def draw(self):
-        if(self.type==1):
-            pygame.draw.circle(
-                screen,
+        """Нарисовать шарик
+        Метод рисует шарик в координатах x, y
+        """
+        pygame.draw.circle(
+                self.screen,
                 self.color,
                 (self.x, self.y),
                 self.r
             )
-            pygame.draw.circle(
-                screen,
-                BLACK,
-                (self.x, self.y),
-                self.r,
-                width=1
-            )
-        elif self.type == 2:
-            pygame.draw.rect(
-                screen,
-                self.color,
-                (self.x-self.r, self.y-self.r, self.r*2,self.r*2)
-            )
-            pygame.draw.rect(
-                screen,
-                BLACK,
-                (self.x-self.r, self.y-self.r, self.r*2,self.r*2),
-                width=1
-            )
 
-    def move(self):
-        """перемещает себя значение скорости"""
-        self.x += self.vx
-        self.y += self.vy
+    def collision(self, obj, p, q):
+        """ Метод столкновения целей между собой
+        p - скорость по x объекта с которым сталкиваются
+        q - скорость по y объекта с которым сталкиваются
+        """
+        if (self.x-obj.x)**2 + (self.y-obj.y)**2 <= (self.r + obj.r)**2:
+            p = obj.vx
+            q = obj.vy
+            obj.vx = self.vx
+            obj.vy = self.vy
+            self.vx = p
+            self.vy = q
+            self.x -= (obj.x-self.x)/100
 
 
 def drawscore():
