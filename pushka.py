@@ -259,6 +259,35 @@ class Bomb(Ball):
         #if list[i].y > 570:
             #list.pop(i)
 
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+class Tank(Gun):
+    def __init__(self, screen, x, vx, health):
+        super().__init__(self, x, y)
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.vx = vx
+        self.health = health
+
+    def draw(self):
+        pygame.draw.rect(self.screen, BLACK, (self.x, 550, 50, 20))
+        pygame.draw.rect(self.screen, BLACK, (self.x+10, 520, 30, 30))
+        Tank.draw1(self, self.x + 25, 535)
+
+    def move(self, d):
+        if d == 1:
+            self.x += self.vx
+
+        elif d == -1:
+            self.x += -self.vx
+
+    def hit(self, obj):
+        if obj.x > self.x and obj.x < self.x + 50 and obj.y<570 and obj.y > 520:
+            self.health -= 10
+
+
 Targets = []
 for i in range(randint(5, 7)):
     x = randint(0, 600)
