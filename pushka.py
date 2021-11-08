@@ -340,19 +340,52 @@ def write(string, score, x, y, a):
 
 
 while not finished:
+    control1 = control2 = 100
+    if T[1] == 101:
+        for i in range(l):
+            T[i] = 0
+    s1 = len(Bullets1)
+    s2 = len(Bullets2)
     screen.fill(WHITE)
-    gun.draw1()
-    target1.draw()
-    target2.draw()
-    for b in balls:
-        b.draw()
-    drawscore()
-    pause=False
-    if(do_showtext > 0):
-        showtext()
-        do_showtext-=1
-        pause=True
-    pygame.display.update()
+    if tank2.health > 0:
+        Tank.draw(tank2)
+    if tank1.health > 0:
+        Tank.draw(tank1)
+    l1 = len(Bombs)
+    for i in range(l1):
+        if Bombs[i].y > 565:
+            Bombs.pop(i)
+            j = randint(0, l - 1)
+            x = Targets[j].x
+            y = Targets[j].y
+            r = 10
+            vx = 0
+            vy = 10
+            g = 10
+            new_bomb = Bomb(screen, x, y, r, vx, vy, BLACK, g)
+            Bombs.append(new_bomb)
+    for i in range(s1):
+        Bullet.delete(Bullets1[i], Bullets1)
+    write('score2:', score2, 610, 50, 180)
+    write('score1:', score1, 10, 50, 180)
+    if timer < 100:
+        write('Нажмите 1 или 2 для выбора и переключения', -1, 100, 300, 180)
+        write('AD-движение 1, стрелки - движение 2', -1, 100, 340, 180)
+        timer += 1
+    if tank2.health > 0:
+        write('health2:', tank2.health, 610, 80, 180)
+    else:
+        write('health2:', 0, 610, 80, 180)
+        write('Первый победил', -2, 300, 400, 180)
+    if tank1.health > 0:
+        write('health1:', tank1.health, 10, 80, 180)
+    else:
+        write('health1:', 0, 10, 80, 180)
+        write('Второй победил', -2, 300, 400, 180)
+    x1, y1 = pygame.mouse.get_pos()
+    for i in range(l):
+        Ball.draw(Targets[i])
+        Ball.move(Targets[i])
 
     clock.tick(FPS)
     for event in pygame.event.get():
