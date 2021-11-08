@@ -328,8 +328,6 @@ for i in range(l):
     T.append(0)
 timer = 0
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
 
 def write(string, score, x, y, a):
     f0 = pygame.font.Font(None, 50)
@@ -340,23 +338,6 @@ def write(string, score, x, y, a):
     text20 = f0.render(string, True, (a, 0, 0))
     screen.blit(text20, (x, y))
 
-
-
-pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-bullet = 0
-bulletshow=0
-balls = []
-points = 0
-
-clock = pygame.time.Clock()
-gun = Gun(screen, 300, 20)
-target1 = Target(1)
-target2 = Target(2)
-finished = False
-
-do_showtext=0
-pause = False
 
 while not finished:
     screen.fill(WHITE)
