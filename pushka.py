@@ -225,6 +225,79 @@ class Target(Ball):
             self.vy = q
             self.x -= (obj.x-self.x)/100
 
+class Bullet(Ball):
+    def __init__(self, screen, x, y, r, vx, vy, color, g):
+     super().__init__(screen, x, y, r, vx, vy, color, g)
+     self.screen = screen
+    def draw(self):
+        pygame.draw.circle(
+                self.screen,
+                self.color,
+                (self.x, self.y),
+                self.r
+            )
+
+    def delete(self, list):
+        if list[i].vx and list[i].vy == 0:
+            list.pop(i)
+
+
+class Bomb(Ball):
+    def __init__(self, screen, x, y, r, vx, vy, color, g):
+     super().__init__(screen, x, y, r, vx, vy, color,g)
+     self.screen = screen
+
+    def draw(self):
+        pygame.draw.circle(
+                self.screen,
+                self.color,
+                (self.x, self.y),
+                self.r
+            )
+
+    #def detonation(self, list):
+        #if list[i].y > 570:
+            #list.pop(i)
+
+Targets = []
+for i in range(randint(5, 7)):
+    x = randint(0, 600)
+    y = randint(0, 400)
+    r = randint(20, 40)
+    vx = randint(-10, 10)
+    vy = 0
+    COLOR = GAME_COLORS[randint(0, 5)]
+    g = 0
+    my_ball = Target(screen, x, y, r, vx, vy, COLOR, g)
+    Targets.append(my_ball)
+l = len(Targets)
+bullet = 0
+s = 0
+score1 = score2 = 0
+flag1 = flag2 = False
+Bullets1 = []
+Bullets2 = []
+clock = pygame.time.Clock()
+tank1 = Tank(screen, 300, 20, 100)
+tank2 = Tank(screen, 500, 20, 100)
+finished = False
+fla = fld = False
+fl_left = fl_right = False
+Bombs = []
+for i in range(l):
+    x = Targets[i].x
+    y = Targets[i].y
+    r = 10
+    vx = 0
+    vy = 10
+    g = 10
+    new_bomb = Bomb(screen, x, y, r, vx, vy, BLACK, g)
+    Bombs.append(new_bomb)
+T = []
+control = 100
+for i in range(l):
+    T.append(0)
+timer = 0
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -237,6 +310,7 @@ def write(string, score, x, y, a):
     string = str(string)
     text20 = f0.render(string, True, (a, 0, 0))
     screen.blit(text20, (x, y))
+
 
 
 pygame.init()
