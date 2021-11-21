@@ -419,6 +419,7 @@ fla = fld = flw = fls = False
 fl_left = False
 fl_right = True
 Bombs = []
+
 for i in range(l):
     x = Targets[i].x
     y = Targets[i].y
@@ -428,6 +429,7 @@ for i in range(l):
     g = 10
     new_bomb = Bomb(screen, x, y, r, vx, vy, BLACK, g)
     Bombs.append(new_bomb)
+
 control = 100
 timer = 0
 
