@@ -295,6 +295,13 @@ class Bomb(Ball):
             )
 
 class Rect:
+    """
+        Конструктор класса Rect
+        Args:
+        x, y, a, b - координаты верхнего левого угла и длины сторон
+        vx, vy - скорости по осям
+        color - цвет прямоугольника
+        """
     def __init__(self, screen, x, y, a, b, vx, vy, color):
         self.x = x
         self.y = y
@@ -330,8 +337,10 @@ class Rect:
             self.y -= 10
 
     def draw(self):
+        """Метод рисует прямоугольник"""
         pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.a, self.b))
     def hittest(self, obj):
+        """Метод проверяет координаты объеекта obj и если они попадают в область прямоугольника функция возвращает True"""
         if obj.x > self.x and obj.x < self.x + self.a and obj.y > self.y and obj.y < self.y + self.b:
             return True
 
@@ -393,7 +402,6 @@ tank1 = Tank(screen, 300, 20, 100)
 tank2 = Tank(screen, 500, 20, 100)
 finished = False
 fla = fld = False
-fl_left = fl_right = False
 Bombs = []
 for i in range(l):
     x = Targets[i].x
@@ -412,7 +420,11 @@ timer = 0
 
 
 def write(string, score, x, y, a):
-    """Функция отрисовки текста"""
+    """Функция отрисовки текста с численным параметром score
+    Args:
+    x, y - положение левого верхнего угла поверхности с текстом
+    score - численный параметр
+    string - текстовая строка"""
     f0 = pygame.font.Font(None, 50)
     if score > -1:
         text10 = f0.render(str(score), True, (a, 0, 0))
@@ -467,7 +479,7 @@ while not finished:
     write('score2:', score2, 610, 50, 180)
     write('score1:', score1, 10, 50, 180)
     if timer < 100:
-        write('Нажмите 1 или 2 для выбора и переключения', -1, 100, 300, 180)
+        write('Нажмите 1 или 2 для переключения танков', -1, 100, 300, 180)
         write('AD-движение 1, стрелки - движение 2', -1, 100, 340, 180)
         timer += 1
     if tank2.health > 0:
