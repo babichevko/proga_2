@@ -68,10 +68,49 @@ class Ball:
             self.vy = -self.vy / 1.1
             self.vx = self.vx / 1.1
             self.y -= 10
-        if self.x <= 0 or self.x >= 800 or self.y <= 0 or self.y >= 600:
-            self.vx = 0
-            self.vy = 0
-            self.g = 0
+
+    class Rect:
+        def __init__(self, screen, x, y, a, b, vx, vy, color):
+            self.x = x
+            self.y = y
+            self.vx = vx
+            self.vy = vy
+            self.a = a
+            self.b = b
+            self.color = color
+            self.screen = screen
+
+        def move(self):
+            """Переместить прямоугольник по прошествии единицы времени.
+            Метод описывает перемещение мяча за один кадр перерисовки. То есть, обновляет значения
+            self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
+            и стен по краям окна (размер окна 800х600).
+            """
+            self.x += self.vx
+            self.y -= self.vy
+            if self.x <= 0:
+                self.vx = -self.vx / 1.1
+                self.vy = self.vy / 1.1
+                self.x += 10
+            if self.x + self.a >= 800:
+                self.vx = -self.vx / 1.1
+                self.vy = self.vy / 1.1
+                self.x -= 10
+            if self.y <= 0:
+                self.vy = -self.vy / 1.1
+                self.vx = self.vx / 1.1
+                self.y += 10
+            if self.y + self.b >= 600:
+                self.vy = -self.vy / 1.1
+                self.vx = self.vx / 1.1
+                self.y -= 10
+
+        def draw(self):
+            pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.a, self.b))
+
+        def hittest(self, obj):
+            if obj.x > self.x and obj.x < self.x + self.a and obj.y > self.y and obj.y < self.y + self.b:
+                return True
 
     def draw(self):
         """Нарисовать шарик
@@ -255,14 +294,54 @@ class Bomb(Ball):
                 self.r
             )
 
-    #def detonation(self, list):
-        #if list[i].y > 570:
-            #list.pop(i)
+class Rect:
+    def __init__(self, screen, x, y, a, b, vx, vy, color):
+        self.x = x
+        self.y = y
+        self.vx = vx
+        self.vy = vy
+        self.a = a
+        self.b = b
+        self.color = color
+        self.screen = screen
+    def move(self):
+        """Переместить прямоугольник по прошествии единицы времени.
+        Метод описывает перемещение мяча за один кадр перерисовки. То есть, обновляет значения
+        self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
+        и стен по краям окна (размер окна 800х600).
+        """
+        self.x += self.vx
+        self.y -= self.vy
+        if self.x <= 0:
+            self.vx = -self.vx/1.1
+            self.vy = self.vy/1.1
+            self.x += 10
+        if self.x + self.a >= 800:
+            self.vx = -self.vx / 1.1
+            self.vy = self.vy / 1.1
+            self.x -= 10
+        if self.y <= 0:
+            self.vy = -self.vy / 1.1
+            self.vx = self.vx / 1.1
+            self.y += 10
+        if self.y + self.b >= 600:
+            self.vy = -self.vy / 1.1
+            self.vx = self.vx / 1.1
+            self.y -= 10
 
+    def draw(self):
+        pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.a, self.b))
+    def hittest(self, obj):
+        if obj.x > self.x and obj.x < self.x + self.a and obj.y > self.y and obj.y < self.y + self.b:
+            return True
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 class Tank(Gun):
+    """Конструктор класса Tank с параметрами:
+        x, y - координаты танка
+        vx - скорость по оси x
+        """
     def __init__(self, screen, x, vx, health):
         super().__init__(self, x, y)
         self.screen = screen
@@ -272,11 +351,13 @@ class Tank(Gun):
         self.health = health
 
     def draw(self):
+        """Метод рисования танка"""
         pygame.draw.rect(self.screen, BLACK, (self.x, 550, 50, 20))
         pygame.draw.rect(self.screen, BLACK, (self.x+10, 520, 30, 30))
         Tank.draw1(self, self.x + 25, 535)
 
     def move(self, d):
+        """Метод перемещения танка"""
         if d == 1:
             self.x += self.vx
 
@@ -284,6 +365,7 @@ class Tank(Gun):
             self.x += -self.vx
 
     def hit(self, obj):
+        """Метод, уменьшающий здоровье танка при попадании объекта"""
         if obj.x > self.x and obj.x < self.x + 50 and obj.y<570 and obj.y > 520:
             self.health -= 10
 
@@ -330,6 +412,7 @@ timer = 0
 
 
 def write(string, score, x, y, a):
+    """Функция отрисовки текста"""
     f0 = pygame.font.Font(None, 50)
     if score > -1:
         text10 = f0.render(str(score), True, (a, 0, 0))
@@ -338,6 +421,18 @@ def write(string, score, x, y, a):
     text20 = f0.render(string, True, (a, 0, 0))
     screen.blit(text20, (x, y))
 
+Rects = []
+for i in range(randint(5, 7)):
+    x = randint(0, 600)
+    y = randint(0, 400)
+    a = randint(10, 30)
+    b = randint(5, 20)
+    vx = randint(-10, 10)
+    vy = 0
+    COLOR = GAME_COLORS[randint(0, 5)]
+    my_rect = Rect(screen, x, y, a, b, vx, vy, COLOR)
+    Rects.append(my_rect)
+p = len(Rects)
 
 while not finished:
     control1 = control2 = 100
@@ -346,6 +441,9 @@ while not finished:
             T[i] = 0
     s1 = len(Bullets1)
     s2 = len(Bullets2)
+    for i in range(p):
+        Rect.move(Rects[i])
+        Rect.draw(Rects[i])
     screen.fill(WHITE)
     if tank2.health > 0:
         Tank.draw(tank2)
@@ -505,6 +603,32 @@ while not finished:
     s1 = len(Bullets1)
     s2 = len(Bullets2)
     l1 = len(Bombs)
+    for i in range(p):
+        for j in range(s1):
+            if Rect.hittest(Rects[i], Bullets1[j]) == True:
+                Rects.pop(i)
+                x = randint(0, 600)
+                y = randint(0, 400)
+                a = randint(10, 30)
+                b = randint(5, 20)
+                vx = randint(-10, 10)
+                vy = 0
+                COLOR = GAME_COLORS[randint(0, 5)]
+                my_rect = Rect(screen, x, y, a, b, vx, vy, COLOR)
+                Rects.append(my_rect)
+    for i in range(p):
+        for j in range(s2):
+            if Rect.hittest(Rects[i], Bullets2[j]) == True:
+                Rects.pop(i)
+                x = randint(0, 600)
+                y = randint(0, 400)
+                a = randint(10, 30)
+                b = randint(5, 20)
+                vx = randint(-10, 10)
+                vy = 0
+                COLOR = GAME_COLORS[randint(0, 5)]
+                my_rect = Rect(screen, x, y, a, b, vx, vy, COLOR)
+                Rects.append(my_rect)
     if flag2:
         if l1 > 0:
             for i in range(l1):
